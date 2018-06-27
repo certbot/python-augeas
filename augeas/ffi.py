@@ -1,3 +1,4 @@
+import os
 from cffi import FFI
 
 ffi = FFI()
@@ -44,7 +45,10 @@ const char *aug_error_details(augeas *aug);
 void free(void *);
 """)
 
-lib = ffi.dlopen("augeas")
+if os.getenv('SNAP'):
+    lib = ffi.dlopen(os.path.join(os.getenv('SNAP'), "usr/lib/x86_64-linux-gnu/libaugeas.so.0"))
+else:
+    lib = ffi.dlopen("augeas")
 
 if __name__ == "__main__":
     ffi.compile(verbose=True)
