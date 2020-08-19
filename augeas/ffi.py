@@ -45,12 +45,12 @@ const char *aug_error_details(augeas *aug);
 void free(void *);
 """)
 
-# SNAP is the root of our snap, but it is only valid if SNAP_NAME is 'certbot'.
-# During the snap build, SNAP_NAME is 'snapcraft', and in this case we expect
-# the library to be on the "system" since the build environment system has it
-# present.
-if os.getenv('SNAP') and os.getenv('SNAP_NAME') == 'certbot':
-    lib = ffi.dlopen(os.path.join(os.getenv('SNAP'), "usr/lib/x86_64-linux-gnu/libaugeas.so.0"))
+# CERTBOT_AUGEAS_PATH is the location of Augeas when the Certbot snap is
+# mounted, but it is only valid if SNAP_NAME is 'certbot'.  During the snap
+# build, SNAP_NAME is 'snapcraft', and in this case we expect the library to be
+# on the "system" since the build environment system has it present.
+if os.getenv('CERTBOT_AUGEAS_PATH') and os.getenv('SNAP_NAME') == 'certbot':
+    lib = ffi.dlopen(os.environ['CERTBOT_AUGEAS_PATH'])
 else:
     lib = ffi.dlopen("augeas")
 
